@@ -1,0 +1,52 @@
+# =====================================================================
+# SmartSpender — .gitignore
+# =====================================================================
+
+# ---------- Backend (Java / Maven) ----------
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/classpath.txt
+!backend/.mvn/wrapper/maven-wrapper.properties
+*.class
+*.log
+
+# ---------- Frontend (Node / Vite) ----------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# ---------- IDE / Editors ----------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Secrets ----------
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# ---------- Docker ----------
+docker-compose.override.yml
+
+# ---------- Test artifacts ----------
+**/surefire-reports/
+**/failsafe-reports/

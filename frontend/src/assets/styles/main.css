@@ -1,0 +1,242 @@
+/* =====================================================================
+ * SmartSpender — Design System
+ *
+ * Single source of truth for spacing, color, layout, and typography.
+ * Every dimension is a CSS variable. Change once, propagate everywhere.
+ * ===================================================================== */
+
+:root {
+/* ---------- Colors ---------- */
+--color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  --color-primary: #6366f1;         /* indigo/purple */
+  --color-primary-soft: #eef2ff;    /* very light purple */
+
+  --color-income: #16a34a;          /* green */
+  --color-expense: #dc2626;         /* red */
+  --color-ok: #6366f1;              /* was #22c55e — changed to purple to match theme */
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
+
+  /* ---------- Spacing scale (4px base) ---------- */
+  --space-1: 0.25rem;   /* 4px  */
+  --space-2: 0.5rem;    /* 8px  */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+
+  /* ---------- Radii ---------- */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+
+  /* ---------- Layout ---------- */
+  --sidebar-w: 240px;
+  --sidebar-w-collapsed: 68px;
+  --content-max: 1600px;
+  --topbar-h: 60px;
+
+  /* ---------- Typography ---------- */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.75rem;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* =====================================================================
+ * CARD — the primary container primitive
+ * Padding is intentionally generous (24px × 28px) to fix "too small" issue
+ * ===================================================================== */
+
+.sp-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6) var(--space-8);   /* 24px top/bottom, 32px sides */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Compact variant for dense lists */
+.sp-card-compact {
+  padding: var(--space-4) var(--space-5);
+}
+
+/* =====================================================================
+ * LAYOUT PRIMITIVES
+ *
+ * Every grid uses `minmax(0, 1fr)` to prevent blowouts from long content.
+ * This is THE fix for the "cards take whole row" bug.
+ * ===================================================================== */
+
+/* Vertical stack */
+.sp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sp-stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Horizontal row (wraps) */
+.sp-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.sp-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---------- Fixed-column grids ---------- */
+
+.sp-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.sp-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.sp-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.sp-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+/* Responsive collapse — every grid respects breakpoints */
+@media (max-width: 1400px) {
+  .sp-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .sp-grid-4,
+  .sp-grid-3,
+  .sp-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================================
+ * TEXT UTILITIES
+ * ===================================================================== */
+
+.sp-text-muted { color: var(--color-text-muted); }
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* =====================================================================
+ * AMOUNT COLORING
+ * ===================================================================== */
+
+.sp-amount-income  { color: var(--color-income);  font-variant-numeric: tabular-nums; }
+.sp-amount-expense { color: var(--color-expense); font-variant-numeric: tabular-nums; }
+
+/* =====================================================================
+ * ENVELOPE UTILIZATION (backend sends Utilization enum)
+ * ===================================================================== */
+
+.sp-progress-ok       { --bar-color: var(--color-ok);      }
+.sp-progress-warning  { --bar-color: var(--color-warning); }
+.sp-progress-exceeded { --bar-color: var(--color-danger);  }
+
+/* =====================================================================
+ * TABLE SCROLL WRAPPER
+ * ===================================================================== */
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-scroll table {
+  min-width: 640px;
+}

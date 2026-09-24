@@ -1,0 +1,61 @@
+services:
+  # =====================================================================
+  # PostgreSQL 16 — the source of truth
+  # =====================================================================
+  postgres:
+    image: postgres:16
+    container_name: smartspender-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smartspender
+      POSTGRES_USER: smartspender
+      POSTGRES_PASSWORD: smartspender
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartspender -d smartspender"]
+      interval: 5s
+      timeout: 5s
+      retries: 10 
+
+  # =====================================================================
+  # Spring Boot backend
+  # Exposed on 8080 for direct API access during development.
+  # =====================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartspender-backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smartspender
+      SPRING_DATASOURCE_USERNAME: smartspender
+      SPRING_DATASOURCE_PASSWORD: smartspender
+      APP_JWT_SECRET: "dev-only-change-me-super-secret-key-that-is-long-enough-for-hs256"
+      APP_FRONTEND_BASE_URL: "http://localhost"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # =====================================================================
+  # Vue 3 SPA served by Nginx
+  # Exposed on 80 (so http://localhost works with no port).
+  # =====================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartspender-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,0 +1,1 @@
+export type PeriodMode = 'MONTH' | 'YEAR'
